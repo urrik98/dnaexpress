@@ -1,6 +1,6 @@
 angular.module('app.guestuserservices',[])
 
-.factory('GuestFactory', ['$http', '$state', function($http, $state) {
+.factory('GuestFactory', ['$http', '$state', '$window', function($http, $state, $window) {
 
   var genID = function() {
     var ID = "";
@@ -9,7 +9,7 @@ angular.module('app.guestuserservices',[])
       ID += chars[Math.floor(Math.random() * chars.length)];
     }
     return ID;
-  }
+  };
 
   var createEvent = function(data) {
 
@@ -27,9 +27,10 @@ angular.module('app.guestuserservices',[])
       data:data
     })
     .then(function(res) {
-      console.log(res)
+      console.log("response", res.data.data);
+      $window.sessionStorage.setItem('wefeast.guestuserevents', JSON.stringify(res.data.data))
     })
-  }
+  };
 
   return {
     createEvent:createEvent

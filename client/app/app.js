@@ -162,6 +162,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
       templateUrl:'app/views/guestusershowevents.html',
       controller:'GuestUserCtrl'
     })
+    .state('guestuserdashboard.guestuseroptions.guestuserfocusevent', {
+      url:'/guestuserfocusevent',
+      templateUrl:'app/views/guestuserfocusevent.html',
+      controller:'GuestUserCtrl'
+    })
 
     $locationProvider.html5Mode(true);
 

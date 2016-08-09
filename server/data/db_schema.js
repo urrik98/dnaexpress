@@ -205,7 +205,7 @@ db.schema.hasTable('guestEventInvitees').then(function(exists) {
       guestEventInvitee.increments('id').primary();
       guestEventInvitee.string('email', 30);
       guestEventInvitee.string('food_choice',30);
-      guestEventInvitee.string('attending', 5);
+      guestEventInvitee.string('responded', 5);
       guestEventInvitee.integer('guestEvents_id').references('guestEvents.id');
     }).then(function () {
       console.log('Created guestEventInvitees table');

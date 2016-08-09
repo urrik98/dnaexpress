@@ -1,1 +1,29 @@
+<table ng-if="!showFocusEvent"class="responsive-table">
+  <thead>
+    <tr>
+      <th>Event name</th>
+      <th>Event date</th>
+      <th>RSVP by</th>
+      <th>RSVP/Show Details</th>
+    </tr>
+  </thead>
+  <tr ng-repeat="event in eventsBin">
+    <td>{{event.event_desc}}</td>
+    <td>{{event.date}}</td>
+    <td>{{event.rsvp_date}}</td>
+    <td><a><span ng-click="toggleFocusEvent(event)">view/rsvp</span></a></td>
+  </tr>
+  <div ng-if="showFocusEvent">
+    <div class="row">
+      <div>
+        <img class="col l3 m3 s1 offset-l2 offset-m2"src="assets/photos/Invited.jpg" />
+      </div>
+      <div class="col l5 m5 s12">
+        <h5>{{focusEvent.event_desc}}</h5>
+        <h5>{{focusEvent.date}}</h5>
+      </div>
+    </div>
 
+    <a><span ng-click="toggleFocusEvent()">Back to list</span></a>
+  </div>
+</table>

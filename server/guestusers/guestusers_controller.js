@@ -8,8 +8,9 @@ module.exports = {
   createEvent: function(req, res, next) {
     var event_desc = req.body.event_desc;
     var event_date = req.body.date;
-    var creator_email = req.body.host;
-    var total_invitees = req.body.invitees.length;
+    var creator_email = req.body.hostemail;
+    var creator_name = req.body.hostname;
+    var total_invitees = req.body.invitees.length + 1;
     var location = req.body.location;
     var rsvp_date = req.body.rsvp_date;
     var responded;
@@ -22,6 +23,7 @@ module.exports = {
           var newGuestEvent = new GuestEvent({
             event_desc: event_desc,
             creator_email:creator_email,
+            creator_name:creator_name,
             location: location,
             publicID:publicID,
             total_invitees:total_invitees,
@@ -29,10 +31,22 @@ module.exports = {
             rsvp_date:rsvp_date
           });
           newGuestEvent.save()
-          .then(function(newGuestEvent) {
+          .then(function(nge) {
+            console.log("nge",nge)
+            var clientData = {
+              event_desc:nge.attributes.event_desc,
+              publicID:nge.attributes.publicID,
+              event_date:nge.attributes.event_date,
+              rsvp_date:nge.attributes.rsvp_date,
+              hostname:nge.attributes.creator_name,
+              hostemail:nge.attributes.creator_email
+            };
+            console.log(clientData)
+            res.status(200).json({message:"Event successfully created", data:[clientData]});
             var guestinvitee = new models.GuestEventInvitee({
               email:creator_email,
-              guestEvents_id: newGuestEvent.id
+              guestEvents_id: newGuestEvent.id,
+              responded:false
             })
             .save()
             .then(function(entry) {
@@ -41,11 +55,13 @@ module.exports = {
             req.body.invitees.map(function(invitee) {
               var guestInvitee = new models.GuestEventInvitee({
                 email:invitee,
-                guestEvents_id: newGuestEvent.id
+                guestEvents_id: newGuestEvent.id,
+                responded:false
               })
               guestInvitee.save()
               .then(function(guestInvitee){
                 //send emails with event publicID,
+                newGuestEvent.id = null;
               })
               .catch(function(err) {
                 console.error("error in saving guest invitees to table", err);
