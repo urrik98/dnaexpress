@@ -1,0 +1,68 @@
+
+  <form ng-submit="guestUserEventSubmit()">
+    <div class="row">
+      <h5 class="center-align">Enter information about the event here</h5>
+    </div>
+    <div class="row">
+      <div class="input-field col l6 m6 s12">
+        <input ng-model="guestEvent.event_desc" id="Event description (eg Mom's Birthday)" type="text" class="validate">
+        <label for="Event description (eg Mom's Birthday)">Event description (eg Mom's Birthday)</label>
+      </div>
+      <div class="input-field col l3 m3 s12">
+        <input ng-model="guestEvent.hostname" id="Your name" type="text" class="validate">
+        <label for="Your name">Your name</label>
+      </div>
+      <div class="input-field col l3 m3 s12">
+        <input ng-model="guestEvent.hostemail" id="Your email" type="email" class="validate">
+        <label for="Your email">Your email</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col l4 m4 s12">
+        <input ng-model="guestEvent.location" id="Location" type="text" class="validate">
+        <label for="Location">City or Zipcode</label>
+      </div>
+      <div class="input-field col l4 m4 s12">
+        <input ng-model="guestEvent.date" id="Event Date / Time" type="text" class="validate">
+        <label for="Event Date / Time">Event Date / Time</label>
+      </div>
+      <div class="input-field col l4 m4 s12">
+        <input ng-model="guestEvent.rsvp_date" id="RSVP by" type="text" class="validate">
+        <label for="RSVP by">RSVP by</label>
+      </div>
+    </div>
+    <div class="row">
+      <h6 class="center-align">Enter the emails of invitees below</h6>
+    </div>
+    <div class="row">
+      <div class="input-field col l4 m4 s12">
+        <input ng-model="guestEvent.guest1" id="Guest 1" type="email" class="validate">
+        <label for="Guest 1">Guest email</label>
+      </div>
+      <div class="input-field col l4 m4 s12">
+        <input ng-model="guestEvent.guest2" id="Guest 2" type="email" class="validate">
+        <label for="Guest 2">Guest email</label>
+      </div>
+      <div class="input-field col l4 m4 s12">
+        <input ng-model="guestEvent.guest3" id="Guest 3" type="email" class="validate">
+        <label for="Guest 3">Guest email</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col l4 m4 s12">
+        <input ng-model="guestEvent.guest4" id="Guest 4" type="email" class="validate">
+        <label for="Guest 4">Guest email</label>
+      </div>
+      <div class="input-field col l4 m4 s12">
+        <input ng-model="guestEvent.guest5" id="Guest 5" type="email" class="validate">
+        <label for="Guest 5">Guest email</label>
+      </div>
+      <div class="input-field col l4 m4 s12">
+        <input ng-model="guestEvent.guest6" id="Guest 6" type="email" class="validate">
+        <label for="Guest 6">Guest email</label>
+      </div>
+    </div>
+    <div class="row">
+      <div ng-click="guestUserEventSubmit();" class="btn col l3 m3 s4 offset-s8 offset-l9 offset-m9 blue-grey darken-4">Send</div>
+    </div>
+  </form>

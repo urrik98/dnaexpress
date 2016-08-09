@@ -14,8 +14,9 @@ var app = angular.module('app', [
   'app.showevent',
   'app.responseform',
   'app.restaurantresults',
+  'app.guestuser',
+  'app.guestuserservices',
   'angularjs-datetime-picker'
-
   ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
@@ -25,7 +26,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
   $stateProvider
     .state('main', {
       url: '/',
-      templateUrl:'app/views/welcome.html',
+      templateUrl:'app/views/guestuserlanding.html',
       controller: 'MainCtrl'
     })
     .state('main.signup', {
@@ -140,7 +141,27 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
       templateUrl:'app/views/singlerecommendationview.html',
       controller:'ShowEventCtrl',
       authenticate:true
-    });
+    })
+    .state('guestuserdashboard', {
+      url:'/guestuserexperience',
+      templateUrl:'app/views/guestuserdashboard.html',
+      controller:'GuestUserCtrl'
+    })
+    .state('guestuserdashboard.guestuseroptions', {
+      url:'/menu',
+      templateUrl:'app/views/guestuseroptions.html',
+      controller:'GuestUserCtrl'
+    })
+    .state('guestuserdashboard.guestuseroptions.guestusercreateevent', {
+      url:'/guestusercreateevent',
+      templateUrl:'app/views/guestusercreateevent.html',
+      controller:'GuestUserCtrl'
+    })
+    .state('guestuserdashboard.guestuseroptions.guestusershowevents', {
+      url:'/guestusershowevents',
+      templateUrl:'app/views/guestusershowevents.html',
+      controller:'GuestUserCtrl'
+    })
 
     $locationProvider.html5Mode(true);
 

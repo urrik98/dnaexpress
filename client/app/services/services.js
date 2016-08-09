@@ -3,6 +3,7 @@ angular.module('app.services', ['app.eventfactory'])
 .factory('userFactory', ['$http', '$state', function ($http, $state) {
 
   var userReq = function (userdata) {
+    
     return $http({
       method:'POST',
       url: '/api/search',
@@ -19,6 +20,7 @@ angular.module('app.services', ['app.eventfactory'])
 }])
 
 .factory('restaurantFactory', [function () {
+
   var restaurants;
   var databinLeft = [];
   var databinRight = [];

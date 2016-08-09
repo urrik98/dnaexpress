@@ -1,0 +1,30 @@
+<nav class="grey darken-4 z-depth-2" style="height:58px;">
+  <div class="row">
+    <img src="assets/svg/cutlery.png" style="height:50px;margin-top:7px;padding"class="left" />
+    <div class="left" class="white-text" style="font-size:25pt;">WeFeast</div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="container">
+    <h2 class="center-align blue-grey darken-4 white-text" style="margin-bottom:-7px;border-top-left-radius:10px;border-top-right-radius:10px;"><a class="white-text">Welcome</a></h2>
+    <div class="card-panel z-depth-4" style="border-bottom-left-radius:10px;border-bottom-right-radius:10px;">
+      <p>Going out to eat with a group and having trouble picking a restaurant that appeals to everyone? WeFeast is a restaurant recommendation platform where
+        users ("hosts") can invite friends, family, and colleagues to join them for a meal. Each invitee is emailed an invitation
+        and may come to WeFeast to vote for the type of food they prefer. Once everyone has voted, our recommendation engine will provide the host a selection of
+        restaurants chosen to best satisfy everyone on the guest list.
+      </p>
+      <div class="row" ng-hide="userIsLive;">
+        <div class="card-panel col s2 offset-s1 hoverable white-text center-align" style="background-color:#212121;cursor:pointer;padding-top:3px;" ui-sref="main.signup" ng-click="userClicked();">
+          <span>sign up</span>
+        </div>
+        <div class="card-panel col s2 offset-s1 hoverable white-text center-align" style="background-color:#212121;cursor:pointer;padding-top:3px;" ui-sref="main.signin" ng-click="userClicked();">
+          <span>sign in</span>
+        </div>
+        <div class="card-panel col s4 offset-s1 hoverable white-text center-align" style="background-color:#212121;cursor:pointer;padding-top:3px;" ui-sref="guestuserdashboard.guestuseroptions" ng-click="activateGuestExperience();">
+          <span>continue as guest user</span>
+        </div>
+    </div>
+          <div ui-view></div>
+  </div>
+</div>

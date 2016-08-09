@@ -5,7 +5,8 @@ var gulp = require('gulp'),
   uglify = require('gulp-uglify'),
   rename = require('gulp-rename'),
   ngInject = require('gulp-ng-inject'),
-  notify = require('gulp-notify')
+  notify = require('gulp-notify'),
+  ngAnnotate = require('gulp-ng-annotate')
 
   gulp.task('test', function () {
     gulp.src('spec/**/*.js')
@@ -30,6 +31,7 @@ var gulp = require('gulp'),
       .pipe(jshint())
       .pipe(concat("client-main.js"))
       .pipe(rename({suffix: '.min'}))
+      .pipe(ngAnnotate())
       .pipe(uglify())
       .pipe(gulp.dest('client/dist'))
       .pipe(notify({message: 'Task: client-scripts complete!'}));
@@ -40,4 +42,3 @@ var gulp = require('gulp'),
   gulp.task('watch', function () {
     gulp.watch('client/app/**/*.js', ['client-scripts']);
   });
-

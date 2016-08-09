@@ -57,7 +57,6 @@ angular.module('app.auth', ['app.services', 'app.eventfactory'])
   };
 
   function validateSignup(data) {
-    console.log(data);
     var isValid = true;
     for(var field in data) {
       var string = data[field];
