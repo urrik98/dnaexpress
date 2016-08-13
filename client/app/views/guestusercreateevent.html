@@ -1,7 +1,7 @@
 
   <form ng-submit="guestUserEventSubmit()">
     <div class="row">
-      <h5 class="center-align">Enter information about the event here</h5>
+      <h5 class="center-align">Enter details about your event here</h5>
     </div>
     <div class="row">
       <div class="input-field col l6 m6 s12">
@@ -23,7 +23,7 @@
         <label for="Location">City or Zipcode</label>
       </div>
       <div class="input-field col l4 m4 s12">
-        <input ng-model="guestEvent.date" id="Event Date / Time" type="text" class="validate">
+        <input ng-model="guestEvent.event_date" id="Event Date / Time" type="text" class="validate">
         <label for="Event Date / Time">Event Date / Time</label>
       </div>
       <div class="input-field col l4 m4 s12">
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="row">
-      <h6 class="center-align">Enter the emails of invitees below</h6>
+      <h6 class="center-align">Enter the emails your invitees below</h6>
     </div>
     <div class="row">
       <div class="input-field col l4 m4 s12">
@@ -63,6 +63,6 @@
       </div>
     </div>
     <div class="row">
-      <div ng-click="guestUserEventSubmit();" class="btn col l3 m3 s4 offset-s8 offset-l9 offset-m9 blue-grey darken-4">Send</div>
+      <div ng-click="guestUserEventSubmit();" class="btn col l2 m2 s2 offset-s9 offset-l9 offset-m9 #784e26" style="color:#784e26">Send</div>
     </div>
   </form>

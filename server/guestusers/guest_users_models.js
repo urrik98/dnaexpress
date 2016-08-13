@@ -8,27 +8,38 @@ var db = require('../data/db_schema.js');
       return this.hasOne('SelectedRestaurant');
     },
     guestEventInvitees: function() {
-      return this.hasMany('GuestEventInvitee');
+      return this.belongsToMany('Event_Invitee');
     }
   });
 
   var GuestEventInvitee = db.Model.extend({
     tableName:'guestEventInvitees',
-    guestEventEventInvitee: function() {
-      this.belongsToOne('GuestEvent')
+    event_invitee: function() {
+      this.belongsToMany('Event_Invitee');
     }
   });
 
   var SelectedRestaurant = db.Model.extend({
-    tableName: 'guestEventRestaurants',
+    tableName:'selectedRestaurants',
     guestEvent: function() {
       this.belongsToOne('GuestEvent');
     }
   });
 
+  var Event_Invitee = db.Model.extend({
+    tableName:'event_invitees',
+    guestEvents: function() {
+      this.hasMany('GuestEvent');
+    },
+    GuestEventInvitee: function() {
+      this.hasMany('GuestEventInvitee')
+    }
+  })
+
 
 module.exports = {
   GuestEvent:GuestEvent,
   GuestEventInvitee:GuestEventInvitee,
-  SelectedRestaurant:SelectedRestaurant
+  SelectedRestaurant:SelectedRestaurant,
+  Event_Invitee
 };

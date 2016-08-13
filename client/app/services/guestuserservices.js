@@ -2,25 +2,32 @@ angular.module('app.guestuserservices',[])
 
 .factory('GuestFactory', ['$http', '$state', '$window', function($http, $state, $window) {
 
-  var genID = function() {
-    var ID = "";
-    var chars = [1,2,3,4,5,6,7,8,9,0,"a","b","c","d","e","f"];
-    for (var i = 0; i < chars.length; i++) {
-      ID += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return ID;
-  };
+  var getEvents = function(data) {
+    console.log("sent from factory", data)
+    return $http({
+      url:'api/guestusers/getevents',
+      method:'POST',
+      data:data
+    })
+    .then(function(res){
+      console.log(res.data.data)
+      $window.sessionStorage.setItem('wefeast.guestuserevents', JSON.stringify(res.data.data));
+      $state.go('guestuserdashboard.guestuseroptions.guestusershowevents');
+    })
+
+  }
 
   var createEvent = function(data) {
-
-    data.publicID = genID();
+    console.log(data)
     data.invitees = [];
+    data.invitees.push(data.hostemail);
+
     for (var key in data) {
-      if (/guest/.test(key)) {
+      if (/guest/.test(key) && data[key]) {
         data.invitees.push(data[key]);
       }
     }
-    console.log(data)
+
     return $http({
       url:'/api/guestusers/createevent',
       method:'POST',
@@ -28,12 +35,26 @@ angular.module('app.guestuserservices',[])
     })
     .then(function(res) {
       console.log("response", res.data.data);
-      $window.sessionStorage.setItem('wefeast.guestuserevents', JSON.stringify(res.data.data))
+      // $window.sessionStorage.setItem('wefeast.guestuserevents', JSON.stringify(res.data.data))
     })
   };
 
+  var eventResponse = function(data) {
+
+    return $http({
+      url:'api/guestusers/sendresponse',
+      method:'POST',
+      data:data
+    })
+    .then(function(res) {
+      console.log("response", res);
+    })
+  }
+
   return {
-    createEvent:createEvent
+    createEvent:createEvent,
+    eventResponse:eventResponse,
+    getEvents:getEvents
   }
 
 
