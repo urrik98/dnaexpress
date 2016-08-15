@@ -19,7 +19,7 @@ module.exports.askYelp = function(searchCriteria, callback) {
   })
   .catch(function(err) {
     res.status(500).send({error: 'error inside restaurant_search.js askYelp: ' + err});
-  });
+  })
 }
 
 

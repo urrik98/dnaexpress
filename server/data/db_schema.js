@@ -219,10 +219,10 @@ db.schema.hasTable('selectedRestaurants').then(function(exists) {
       selectedRestaurant.string('address', 75);
       selectedRestaurant.string('city', 50);
       selectedRestaurant.string('phone', 15);
-      selectedRestaurant.string('business_url', 100);
-      selectedRestaurant.string('rating_url', 100);
-      selectedRestaurant.string('thumbnail_url', 100);
-      selectedRestaurant.string('snippet_image_url', 100);
+      selectedRestaurant.string('business_url', 200);
+      selectedRestaurant.string('rating_url', 200);
+      selectedRestaurant.string('thumbnail_url', 200);
+      selectedRestaurant.string('snippet_image_url', 200);
     }).then(function () {
       console.log('Created selectedRestaurants table');
     });
@@ -239,6 +239,7 @@ db.schema.hasTable('event_invitees').then(function(exists) {
       event_invitee.string('food_choice', 20);
       event_invitee.string('publicID', 25);
       event_invitee.boolean('restaurant_is_selected', 5);
+      event_invitee.integer('selectedRestaurant_id',5).references('selectedRestaurants.id');
     }).then(function(){
       console.log('Created event_invitees junction table');
     });

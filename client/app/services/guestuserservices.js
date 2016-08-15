@@ -13,8 +13,7 @@ angular.module('app.guestuserservices',[])
       console.log(res.data.data)
       $window.sessionStorage.setItem('wefeast.guestuserevents', JSON.stringify(res.data.data));
       $state.go('guestuserdashboard.guestuseroptions.guestusershowevents');
-    })
-
+    });
   }
 
   var createEvent = function(data) {
@@ -35,7 +34,6 @@ angular.module('app.guestuserservices',[])
     })
     .then(function(res) {
       console.log("response", res.data.data);
-      // $window.sessionStorage.setItem('wefeast.guestuserevents', JSON.stringify(res.data.data))
     })
   };
 

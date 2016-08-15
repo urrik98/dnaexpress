@@ -5,7 +5,13 @@ var GuestEvents = collections.GuestEvents;
 var GuestEventInvitee = models.GuestEventInvitee;
 var Event_Invitee = models.Event_Invitee;
 var SelectedRestaurant = models.SelectedRestaurant;
-
+var Yelp = require('yelp');
+var yelp = new Yelp({
+  consumer_key:'ju7T0GatX3G3terGQa8qAg',
+  consumer_secret:'xxqTDZc8wGUxCcvzxgaVaRKeGY8',
+  token:'gTsZIinUjEwsPzCcaA_CXLzjN4WSiZOO',
+  token_secret:'D4W6WFkDcsxrADvwLMcv3ZrDJdA'
+});
 module.exports = {
 
   createEvent: function(req, res, next) {
@@ -132,13 +138,14 @@ module.exports = {
     //helper function accesses GuestEvent table and returns data for each event
 
     function fetchGuestEvent(model) {
+      console.log("line 141",model)
       var promise = new Promise(function(resolve, reject){
         GuestEvent.where({id:model.attributes.guestEvents_id})
         .fetch()
         .then(function(guestEvent) {
           var eventData = {
               publicID:guestEvent.attributes.publicID,
-              host:guestEvent.attributes.creator_name,
+              hostname:guestEvent.attributes.creator_name,
               event_date:guestEvent.attributes.event_date,
               rsvp_date:guestEvent.attributes.rsvp_date,
               location:guestEvent.attributes.location,
@@ -146,7 +153,19 @@ module.exports = {
               food_choice:model.attributes.food_choice,
               responded:model.attributes.responded,
             };
-          resolve(eventData);
+            if (model.attributes.restaurant_is_selected === true) {
+              console.log("model.restaurant_is_selected")
+              SelectedRestaurant.where({id:model.attributes.selectedRestaurant_id})
+              .fetch()
+              .then(function(restaurant) {
+                eventData.selectedRestaurant = restaurant;
+                resolve(eventData);
+              })
+            }
+            else {
+                resolve(eventData);
+            }
+
         })
       })
       return promise;
@@ -155,14 +174,16 @@ module.exports = {
   },
 
   sendResponse: function(req, res, next) {
+    console.log("data sent to sendResponse", req.body)
     var publicID = req.body.publicID;
     var email = req.body.email;
-    var food_choice = req.body.foodChoice;
+    var food_choice = req.body.food_choice;
     var responded = req.body.responded;
 
     GuestEventInvitee.where({email:email})
     .fetch()
     .then(function(invitee){
+      console.log("line 166", invitee)
       Event_Invitee.where({guestEventInvitee_id:invitee.id, publicID:publicID})
       .fetch()
       .then(function(model){
@@ -176,7 +197,10 @@ module.exports = {
             console.log("event model", event);
             event.save({number_responded:event.attributes.number_responded + 1}, {patch:true})
             .then(function(savedEvent){
-              if (savedEvent.attributes.number_responded === savedEvent.attributes.number_invited) {
+              console.log("savedEvent after food_choice is registered", savedEvent)
+              if (savedEvent.attributes.number_responded >= savedEvent.attributes.number_invited && savedEvent.attributes.selectedRestaurant_id === null) {
+                console.log("responses equal invitations");
+                selectRestaurant(savedEvent);
                 //retrieve all food_choices and run algorithm then store result in savedModel
               }
             })
@@ -187,6 +211,96 @@ module.exports = {
         console.error("Error in updating invitation");
       });
     });
+
+    //helper functions
+
+    function selectRestaurant(event) {
+      console.log("inside selectRestaurant", event);
+      Event_Invitee.where({guestEvents_id:event.attributes.id})
+      .fetchAll()
+      .then(function(collection){
+        console.log("collection of returned event_invitee models to grab food choices from", collection)
+        var choices = collection.models.map(getFood_Choices);
+        Promise.all(choices)
+        .then(function(allChoices){
+          console.log("all food choices from Event_Invitee table",allChoices);
+          runRestaurantQuery(allChoices, event.attributes.location, event.attributes.id);
+        })
+      })
+    };
+
+    function getFood_Choices(model) {
+      console.log("model.attributes", model.attributes)
+      var promise = new Promise(function(resolve, reject) {
+        resolve(model.attributes.food_choice);
+      })
+      return promise;
+    };
+
+    function runRestaurantQuery(foods, location, eventID) {
+      console.log("inside runRestaurantQuery", foods, location)
+      var hash = {};
+      var top_choice;
+      var yelp_results;
+      // var final_choice;
+      foods.forEach(function(food){
+        if (hash[food]) {
+          hash[food]++;
+        }
+        else {
+          hash[food] = 1;
+        }
+      });
+      for (var key in hash) {
+        if (!top_choice || hash[key] > top_choice[1]) {
+          top_choice = [key, hash[key]];
+        }
+      }
+      console.log("inside runRestaurantQuery", top_choice);
+      yelp.search({category_filter:'restaurants',searchTerm:top_choice[0], location:location})
+      .then(function(yelpData) {
+        yelp_results = yelpData.businesses;
+        var final_choice = yelp_results[Math.floor(Math.random() * yelp_results.length)];
+        console.log("inside chained then statement after yelp call", final_choice);
+        SelectedRestaurant.forge({name:final_choice.name,address:final_choice.location.address[0],city:final_choice.location.city,phone:final_choice.display_phone,business_url:final_choice.url,rating_url:final_choice.rating_img_url,thumbnail_url:final_choice.image_url,snippet_image_url:final_choice.snippet_text})
+        .save()
+        .then(function(sr) {
+          console.log("saved restaurant in table", sr)
+          GuestEvent.where({id:eventID})
+          .fetch()
+          .then(function(ge) {
+            ge.save({selectedRestaurant_id:sr.attributes.id, final_food_choice:top_choice[0]}, {patch:true})
+            .then(function(savedge) {
+              console.log("guestEvent after saving restaurant", savedge)
+              Event_Invitee.where({guestEvents_id:savedge.attributes.id})
+              .fetchAll()
+              .then(function(eicollection) {
+                console.log("event_invitee collection after saving restaurant in guest event",eicollection)
+                eicollection.models.forEach(function(model) {
+                  model.save({restaurant_is_selected:true, selectedRestaurant_id:sr.attributes.id}, {patch:true})
+                  .then(function(m) {
+                    console.log("updated event_invitee to reflect restaurant is selected", m)
+                  })
+                })
+                res.status(200).json({message:"Restaurant is Selected"})
+              })
+            })
+          })
+        })
+        //selection algorithm
+        //save to guestEvents
+        //update event_invitees restaurant_is_selected field
+      })
+      .catch(function(error) {
+        console.error("Error in getting Yelp results",error)
+      })
+
+
+
+    };
+
   }
+
+
 
 }

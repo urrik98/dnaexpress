@@ -23,6 +23,9 @@ var db = require('../data/db_schema.js');
     tableName:'selectedRestaurants',
     guestEvent: function() {
       this.belongsToOne('GuestEvent');
+    },
+    event_invitee: function() {
+      this.belongsMany('Event_Invitee');
     }
   });
 
@@ -31,9 +34,13 @@ var db = require('../data/db_schema.js');
     guestEvents: function() {
       this.hasMany('GuestEvent');
     },
-    GuestEventInvitee: function() {
+    guestEventInvitee: function() {
       this.hasMany('GuestEventInvitee')
+    },
+    selectedRestaurant: function() {
+      this.hasOne('SelectedRestaurant')
     }
+
   })
 
 

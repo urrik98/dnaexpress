@@ -5,29 +5,29 @@
     </div>
     <div class="row">
       <div class="input-field col l6 m6 s12">
-        <input ng-model="guestEvent.event_desc" id="Event description (eg Mom's Birthday)" type="text" class="validate">
+        <input ng-model="guestEvent.event_desc" id="Event description (eg Mom's Birthday)" type="text" class="validate" required>
         <label for="Event description (eg Mom's Birthday)">Event description (eg Mom's Birthday)</label>
       </div>
       <div class="input-field col l3 m3 s12">
-        <input ng-model="guestEvent.hostname" id="Your name" type="text" class="validate">
+        <input ng-model="guestEvent.hostname" id="Your name" type="text" class="validate" required>
         <label for="Your name">Your name</label>
       </div>
       <div class="input-field col l3 m3 s12">
-        <input ng-model="guestEvent.hostemail" id="Your email" type="email" class="validate">
+        <input ng-model="guestEvent.hostemail" id="Your email" type="email" class="validate" required>
         <label for="Your email">Your email</label>
       </div>
     </div>
     <div class="row">
       <div class="input-field col l4 m4 s12">
-        <input ng-model="guestEvent.location" id="Location" type="text" class="validate">
+        <input ng-model="guestEvent.location" id="Location" type="text" class="validate" required>
         <label for="Location">City or Zipcode</label>
       </div>
       <div class="input-field col l4 m4 s12">
-        <input ng-model="guestEvent.event_date" id="Event Date / Time" type="text" class="validate">
-        <label for="Event Date / Time">Event Date / Time</label>
+        <input ng-model="guestEvent.event_date" id="Event Date / Time" type="text" datetime-picker class="validate" required>
+        <label for="Event Date / Time" class="active">Event Date / Time</label>
       </div>
       <div class="input-field col l4 m4 s12">
-        <input ng-model="guestEvent.rsvp_date" id="RSVP by" type="text" class="validate">
+        <input ng-model="guestEvent.rsvp_date" id="RSVP by" type="text" datetime-picker class="validate" required>
         <label for="RSVP by">RSVP by</label>
       </div>
     </div>

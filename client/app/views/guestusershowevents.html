@@ -32,19 +32,24 @@
 
 <!--focusEvent card view-->
 
-  <div ng-if="showFocusEvent">
+  <div ng-if="showFocusEvent" style="border:1px solid #784e26;">
     <div class="row">
       <div>
+        <br>
         <img class="col l3 m3 s1 offset-l2 offset-m2"src="assets/photos/Invited.jpg" />
       </div>
       <div class="col l5 m5 s12">
         <h4>{{focusEvent.event_desc}}</h4>
         <h5>{{focusEvent.event_date}}</h5>
-        <h5>{{focusEvent.host}}</h5>
+        <h5>{{focusEvent.hostname}}</h5>
         <h5>{{focusEvent.restaurant}}</h5>
         <h6 ng-if="!focusEvent.responded" ng-click="toggleResponseForm();"><a>rsvp with food choice</a></h6>
-        <h6 ng-if="focusEvent.responded != false">You have responded to this invitation</h6>
-        <h6 ng-if="focusEvent.food_choice">Your food preference: {{focusEvent.food_choice}}</h6>
+        <h6 ng-if="focusEvent.responded != false && !focusEvent.selectedRestaurant">You have responded to this invitation</h6>
+        <h6 ng-if="focusEvent.food_choice && !focusEvent.selectedRestaurant">Your food preference: {{focusEvent.food_choice}}</h6>
+        <h5 ng-if="focusEvent.selectedRestaurant">{{focusEvent.selectedRestaurant.name}}</h5>
+        <h6 ng-if="focusEvent.selectedRestaurant">{{focusEvent.selectedRestaurant.address}}</h6>
+        <h6 ng-if="focusEvent.selectedRestaurant">{{focusEvent.selectedRestaurant.city}}</h6>
+        <h6 ng-if="focusEvent.selectedRestaurant">{{focusEvent.selectedRestaurant.phone}}</h6>
       </div>
     </div>
     <a><span ng-click="toggleEventsList()">Back to list</span></a>

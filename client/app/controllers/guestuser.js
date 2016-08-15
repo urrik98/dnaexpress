@@ -44,6 +44,7 @@ angular.module('app.guestuser', ['app.guestuserservices'])
   $scope.eventsBin = JSON.parse($window.sessionStorage.getItem('wefeast.guestuserevents')) || [];
 
   $scope.submitResponse = function(data) {
+    console.log("inside submitResponse", data)
     if (submitResponseFlag) {
       submitResponseFlag = false;
       var choices = [];
@@ -52,7 +53,10 @@ angular.module('app.guestuser', ['app.guestuserservices'])
       }
       $scope.focusEvent.responded = true;
       $scope.focusEvent.food_choice = choices[0];
-      $scope.focusEvent.email = $scope.guestUserEmail;
+      console.log("submit response data", data)
+      console.log("$scope.guestUserEmail",$scope.guestUserEmail, "data.hostemail", data.hostemail);
+      $scope.focusEvent.email = $scope.guestUserEmail || data.hostemail;
+      console.log("$scope.focusEvent.email", $scope.focusEvent.email)
       $window.sessionStorage.removeItem('wefeast.guestuserevents');
       $window.sessionStorage.setItem('wefeast.guestuserevents', JSON.stringify($scope.eventsBin));
       GuestFactory.eventResponse($scope.focusEvent);
@@ -67,6 +71,10 @@ angular.module('app.guestuser', ['app.guestuserservices'])
       $scope.guestEvent.publicID = genID();
       $scope.guestEvent.responded = false;
       $scope.eventsBin.push($scope.guestEvent);
+      console.log("guestEvent", $scope.guestEvent);
+      if (!$window.sessionStorage.getItem('wefeast.guestuser')) {
+        $window.sessionStorage.setItem('wefeast.guestuser', $scope.guestEvent.hostemail);
+      }
       var dataCache = $scope.guestEvent;
       $window.sessionStorage.removeItem('wefeast.guestuserevents');
       $window.sessionStorage.setItem('wefeast.guestuserevents', JSON.stringify($scope.eventsBin));
