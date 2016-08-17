@@ -27,9 +27,9 @@ var gulp = require('gulp'),
     //     modules: ['ui.router'] // Any extra modules that you want to include.
     // };
 
-    return gulp.src(['client/services/services.js', 'client/app/controllers/*.js', 'client/app.js'])
+    return gulp.src(['client/app/services/*.js', 'client/app/controllers/*.js', 'client/app.js'])
       .pipe(jshint())
-      .pipe(concat("client-main.js"))
+      .pipe(concat("client-main-new.js"))
       .pipe(rename({suffix: '.min'}))
       .pipe(ngAnnotate())
       .pipe(uglify())

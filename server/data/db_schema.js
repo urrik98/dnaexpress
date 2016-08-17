@@ -3,17 +3,19 @@ var path = require('path');
 var db = require('knex')({
   client: 'pg',
   connection: {
-    // host: process.env.DB_HOST,
-    // database: process.env.DB_DATABASE,
-    // user: process.env.DB_USER,
-    // password: process.env.DB_PASSWORD,
-    // port: process.env.DB_PORT,
-    // ssl: process.env.DB_SSL
-    host     : '127.0.0.1',
-    user     : 'adamrenschen',
-    password : 'Deathtongue',
-    database : 'wefeastapp',
-    port     : '5432'
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: process.env.DB_SSL,
+    url: process.env.DB_URL
+    // host     : '127.0.0.1',
+    // user     : 'adamrenschen',
+    // password : 'Deathtongue',
+    // database : 'wefeastapp',
+    // port     : '5432',
+    //
   },
   searchPath: 'knex,public',
   useNullAsDefault: true
